@@ -15,6 +15,11 @@ export const Container = styled.div<React.HTMLAttributes<HTMLElement>>`
     width: 400px;
     flex-direction: column;
     padding: 25px;
+
+    p {
+      font-size: 12px;
+      color: red;
+    }
   }
 `
 
@@ -38,6 +43,10 @@ export const Button = styled.button<React.HTMLAttributes<HTMLElement>>`
   width: 150px;
   border-radius: 0%;
   font-weight: 600;
+
+  &:disabled {
+    color: ${(props) => props.theme.colors.background};
+  }
 `
 
 export const Logo = styled.div`
