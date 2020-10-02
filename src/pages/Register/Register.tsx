@@ -13,7 +13,7 @@ import {
 import { Icon } from '@iconify/react'
 import tentCamp from '@iconify/icons-si-glyph/tent-camp'
 import theme from '../../styles/theme'
-import api from '../../services/api'
+import { register } from '../../services/api'
 import { store } from 'react-notifications-component'
 
 const Register: React.FC = () => {
@@ -46,45 +46,13 @@ const Register: React.FC = () => {
       setPassword('')
       setPasswordAgain('')
       setLoading(false)
-    }
-    try {
-      await api.post('/user', {
-        email,
-        password
-      })
-
-      store.addNotification({
-        title: 'Sucesso!',
-        message:
-          'Usuário cadastrado com sucesso, enviamos um link de confirmação para o seu e-mail, por favor, confirme-o antes de logar.',
-        type: 'success',
-        insert: 'top',
-        container: 'top-right',
-        animationIn: ['animate__animated', 'animate__fadeIn'],
-        animationOut: ['animate__animated', 'animate__fadeOut'],
-        dismiss: {
-          duration: 6000,
-          onScreen: true
+    } else {
+      register(email, password).then((res) => {
+        if (res.register) {
+          history.push('/')
         }
+        setLoading(false)
       })
-      setLoading(false)
-      history.push('/')
-    } catch (error) {
-      console.log(error.response)
-      store.addNotification({
-        title: 'Falha!',
-        message: error.response ? error.response.data.error : error.message,
-        type: 'danger',
-        insert: 'top',
-        container: 'top-right',
-        animationIn: ['animate__animated', 'animate__fadeIn'],
-        animationOut: ['animate__animated', 'animate__fadeOut'],
-        dismiss: {
-          duration: 3000,
-          onScreen: true
-        }
-      })
-      setLoading(false)
     }
   }
 

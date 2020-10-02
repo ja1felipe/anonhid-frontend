@@ -12,8 +12,7 @@ import {
 import { Icon } from '@iconify/react'
 import tentCamp from '@iconify/icons-si-glyph/tent-camp'
 import theme from '../../styles/theme'
-import api from '../../services/api'
-import { store } from 'react-notifications-component'
+import { login } from '../../services/api'
 
 const Login: React.FC = () => {
   const history = useHistory()
@@ -27,51 +26,12 @@ const Login: React.FC = () => {
   function handleLogin(e: FormEvent) {
     e.preventDefault()
     setLoading(true)
-    api
-      .post('/auth', {
-        email,
-        password
-      })
-      .then((res) => {
-        if (remember) {
-          localStorage.setItem('token', res.data.token)
-          localStorage.setItem('user', JSON.stringify(res.data.user))
-        } else {
-          sessionStorage.setItem('token', res.data.token)
-          sessionStorage.setItem('user', JSON.stringify(res.data.user))
-        }
-        store.addNotification({
-          title: 'Sucesso!',
-          message: 'Bem vindo a comunidade Anon Hid.',
-          type: 'success',
-          insert: 'top',
-          container: 'top-right',
-          animationIn: ['animate__animated', 'animate__fadeIn'],
-          animationOut: ['animate__animated', 'animate__fadeOut'],
-          dismiss: {
-            duration: 6000,
-            onScreen: true
-          }
-        })
-        setLoading(false)
+    login(email, password, remember).then((res) => {
+      if (res.login) {
         history.push('/')
-      })
-      .catch((error) => {
-        store.addNotification({
-          title: 'Falha!',
-          message: error.response ? error.response.data.message : error.message,
-          type: 'danger',
-          insert: 'top',
-          container: 'top-right',
-          animationIn: ['animate__animated', 'animate__fadeIn'],
-          animationOut: ['animate__animated', 'animate__fadeOut'],
-          dismiss: {
-            duration: 3000,
-            onScreen: true
-          }
-        })
-        setLoading(false)
-      })
+      }
+      setLoading(false)
+    })
   }
 
   return (
@@ -81,7 +41,6 @@ const Login: React.FC = () => {
           icon={tentCamp}
           style={{ color: theme.colors.primary, fontSize: '75px' }}
         />
-
         <Title>Anon Hid</Title>
       </Logo>
       <form onSubmit={(e: FormEvent) => handleLogin(e)}>

@@ -1,13 +1,15 @@
 import React from 'react'
 import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom'
+import { isLogged } from './utils/Auth'
 const Login = React.lazy(() => import('./pages/Login/Login'))
 const Register = React.lazy(() => import('./pages/Register/Register'))
+const Home = React.lazy(() => import('./pages/Home/Home'))
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={(props) =>
-      localStorage.getItem('token') ? (
+      isLogged() ? (
         <Component {...props} />
       ) : (
         <Redirect
@@ -25,7 +27,7 @@ const UnloggedRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={(props) =>
-      localStorage.getItem('token') || sessionStorage.getItem('token') ? (
+      isLogged() ? (
         <Redirect
           to={{
             pathname: '/',
@@ -43,6 +45,7 @@ export default function Routes() {
   return (
     <BrowserRouter>
       <Switch>
+        <Route path='/' exact component={Home}></Route>
         <UnloggedRoute path='/login' component={Login}></UnloggedRoute>
         <UnloggedRoute path='/register' component={Register}></UnloggedRoute>
       </Switch>

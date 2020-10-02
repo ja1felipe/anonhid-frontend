@@ -61,7 +61,7 @@ export const Input = styled.input<React.HTMLAttributes<HTMLElement>>`
   padding: 5px;
   margin-bottom: 15px;
   &:focus {
-    border: 2px solid ${(props) => props.theme.colors.secundary};
+    border: 2px solid ${(props) => props.theme.colors.secondary};
     outline: none;
   }
 `
