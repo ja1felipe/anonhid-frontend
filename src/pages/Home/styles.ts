@@ -61,3 +61,19 @@ export const PickerSelect = styled.select<HTMLAttributes<HTMLElement>>`
     box-shadow: none;
   }
 `
+export const Button = styled.button<HTMLAttributes<HTMLElement>>`
+  background: ${(props) => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.contrast};
+  text-transform: uppercase;
+  width: 150px;
+  border-radius: 0%;
+  font-weight: 600;
+  border: none;
+`
+
+export const ButtonBox = styled.div`
+  width: 100;
+  display: flex;
+  flex: row;
+  justify-content: center;
+`

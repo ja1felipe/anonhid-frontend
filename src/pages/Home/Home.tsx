@@ -1,18 +1,25 @@
-import React, { ChangeEvent, useState, useEffect } from 'react'
+import React, { ChangeEvent, useState, useEffect, UIEvent } from 'react'
 
-import { Container, Picker, PickerSelect } from './styles'
+import { Container, Picker, PickerSelect, Button, ButtonBox } from './styles'
 
 import { IPosts, IUser } from '../../types/types'
 import { getPosts, getUserPosts } from '../../services/api'
 import Card from '../../components/Card/Card'
 import userLogged from '../../utils/User'
 import Header from '../../components/Header/Header'
+import PostModal from '../../components/PostModal/PostModal'
+import { isLogged } from '../../utils/Auth'
 
 const Home: React.FC = () => {
   const [query, setQuery] = useState<string>('votes')
   const [posts, setPosts] = useState<IPosts[]>([])
   const [page, setPage] = useState<number>(1)
-
+  const [openModal, setOpenModal] = useState<boolean>(false)
+  const [isNew, setIsNew] = useState<boolean>(false)
+  const [activePost, setActivePost] = useState<IPosts>({
+    image: '',
+    description: ''
+  })
   const user: IUser = userLogged() ? JSON.parse(userLogged()) : ''
 
   useEffect(() => {
@@ -30,14 +37,32 @@ const Home: React.FC = () => {
     return function cleanup() {
       setPosts([])
     }
-  }, [query, page])
+  }, [query, page, activePost])
 
-  function handlePictureClick() {
-    console.log('oi')
+  function handlePictureClick(post: IPosts) {
+    setActivePost(post)
+    setOpenModal(true)
+  }
+
+  function handleScroll(e: UIEvent<HTMLDivElement>) {
+    const { scrollTop, clientHeight, scrollHeight } = e.currentTarget
+
+    if (scrollHeight - scrollTop === clientHeight) {
+      setPage((prev) => prev + 1)
+    }
   }
 
   return (
     <>
+      <PostModal
+        new={isNew}
+        updatePost={setActivePost}
+        post={activePost}
+        editable={false}
+        show={openModal}
+        handleModal={setOpenModal}
+        className={openModal ? 'is-active' : ''}
+      />
       <Header></Header>
       <Picker>
         <div>
@@ -55,17 +80,37 @@ const Home: React.FC = () => {
           </PickerSelect>
         </div>
       </Picker>
-      <Container className='container'>
+      <ButtonBox>
+        {isLogged() && (
+          <Button
+            onClick={() => {
+              setActivePost({
+                image: '',
+                description: ''
+              })
+              setIsNew(true)
+              setOpenModal(!openModal)
+            }}
+            className='button'
+          >
+            Novo Post
+          </Button>
+        )}
+      </ButtonBox>
+      <Container onScroll={handleScroll} className='container'>
         {posts &&
           posts.map((post) => (
             <Card
-              onClick={handlePictureClick}
-              liked={user ? user.likes.includes(post._id) : false}
-              key={post._id}
-              id={post._id}
-              url={post.image_url}
-              likes={post.likes}
-              comments={post.comments.length}
+              onClick={() => {
+                setIsNew(false)
+                handlePictureClick(post)
+              }}
+              liked={user && post._id ? user.likes.includes(post._id) : false}
+              key={post._id ? post._id : '0'}
+              id={post._id ? post._id : '0'}
+              url={post.image_url ? post.image_url : ''}
+              likes={post.likes ? post.likes : 0}
+              comments={post.comments ? post.comments.length : 0}
             />
           ))}
       </Container>

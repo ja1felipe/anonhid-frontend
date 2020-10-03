@@ -7,17 +7,17 @@ export interface IRegister {
 }
 
 export interface IPosts {
-  comments: string[]
-  likes: number
-  _id: string
-  owner: string
+  comments?: string[]
+  likes?: number
+  _id?: string
+  owner?: string
   image: string
   description: string
-  createdAt: string
-  updatedAt: string
-  __v: number
-  image_url: string
-  id: string
+  createdAt?: string
+  updatedAt?: string
+  __v?: number
+  image_url?: string
+  id?: string
 }
 
 export interface IUser {

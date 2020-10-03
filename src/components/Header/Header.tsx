@@ -34,9 +34,11 @@ const Header: React.FC = () => {
           </Button>
         </div>
       ) : (
-        <Button onClick={handleLogout} className='button'>
-          Sair
-        </Button>
+        <div>
+          <Button onClick={handleLogout} className='button'>
+            Sair
+          </Button>
+        </div>
       )}
     </Container>
   )

@@ -194,4 +194,137 @@ const likeDeslike = async (id: string): Promise<boolean> => {
   })
 }
 
-export { login, getPosts, register, likeDeslike, getUserPosts }
+const addComment = async (id: string, comment: string): Promise<IPosts> => {
+  return new Promise(async (resolve, reject) => {
+    api
+      .post(
+        `/post/commentary/${id}`,
+        {
+          comment: comment
+        },
+        {
+          headers: {
+            Authorization: isLogged()
+          }
+        }
+      )
+      .then((res) => {
+        resolve(res.data.post)
+      })
+      .catch((error) => {
+        store.addNotification({
+          title: 'Falha!',
+          message: error.response ? error.response.data.error : error.message,
+          type: 'danger',
+          insert: 'top',
+          container: 'top-right',
+          animationIn: ['animate__animated', 'animate__fadeIn'],
+          animationOut: ['animate__animated', 'animate__fadeOut'],
+          dismiss: {
+            duration: 3000,
+            onScreen: true
+          }
+        })
+      })
+  })
+}
+
+const updatePost = async (id: string, data: FormData): Promise<IPosts> => {
+  return new Promise(async (resolve, reject) => {
+    api
+      .put(`/post/${id}`, data, {
+        headers: {
+          Authorization: isLogged()
+        }
+      })
+      .then((res) => {
+        resolve(res.data.post)
+      })
+      .catch((error) => {
+        store.addNotification({
+          title: 'Falha!',
+          message: error.response ? error.response.data.error : error.message,
+          type: 'danger',
+          insert: 'top',
+          container: 'top-right',
+          animationIn: ['animate__animated', 'animate__fadeIn'],
+          animationOut: ['animate__animated', 'animate__fadeOut'],
+          dismiss: {
+            duration: 3000,
+            onScreen: true
+          }
+        })
+      })
+  })
+}
+
+const createPost = async (data: FormData): Promise<IPosts> => {
+  return new Promise(async (resolve, reject) => {
+    api
+      .post(`/post`, data, {
+        headers: {
+          Authorization: isLogged()
+        }
+      })
+      .then((res) => {
+        resolve(res.data.post)
+      })
+      .catch((error) => {
+        console.log(error.response)
+        store.addNotification({
+          title: 'Falha!',
+          message: error.response ? error.response.data.error : error.message,
+          type: 'danger',
+          insert: 'top',
+          container: 'top-right',
+          animationIn: ['animate__animated', 'animate__fadeIn'],
+          animationOut: ['animate__animated', 'animate__fadeOut'],
+          dismiss: {
+            duration: 3000,
+            onScreen: true
+          }
+        })
+      })
+  })
+}
+
+const deletePost = async (id: string): Promise<IPosts> => {
+  return new Promise(async (resolve, reject) => {
+    api
+      .delete(`/post/${id}`, {
+        headers: {
+          Authorization: isLogged()
+        }
+      })
+      .then((res) => {
+        resolve(res.data.post)
+      })
+      .catch((error) => {
+        store.addNotification({
+          title: 'Falha!',
+          message: error.response ? error.response.data.error : error.message,
+          type: 'danger',
+          insert: 'top',
+          container: 'top-right',
+          animationIn: ['animate__animated', 'animate__fadeIn'],
+          animationOut: ['animate__animated', 'animate__fadeOut'],
+          dismiss: {
+            duration: 3000,
+            onScreen: true
+          }
+        })
+      })
+  })
+}
+
+export {
+  login,
+  getPosts,
+  register,
+  likeDeslike,
+  getUserPosts,
+  addComment,
+  updatePost,
+  createPost,
+  deletePost
+}
