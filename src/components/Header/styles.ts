@@ -20,6 +20,9 @@ export const Title = styled.h1`
   color: ${(props) => props.theme.colors.contrast};
   font-size: 50px;
   margin-left: 15px;
+  @media (max-width: 700px) {
+    font-size: 30px;
+  }
 `
 export const Button = styled.button<HTMLAttributes<HTMLElement>>`
   background: ${(props) => props.theme.colors.primary};
@@ -29,6 +32,11 @@ export const Button = styled.button<HTMLAttributes<HTMLElement>>`
   border-radius: 0%;
   font-weight: 600;
   border: none;
+
+  @media (max-width: 700px) {
+    width: 120px;
+    font-size: 13px;
+  }
 
   &:last-child {
     margin-left: 25px;

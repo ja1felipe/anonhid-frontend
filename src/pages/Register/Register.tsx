@@ -107,7 +107,11 @@ const Register: React.FC = () => {
         />
 
         <ButtonContainer>
-          <Button onClick={() => history.push('/')} className='button'>
+          <Button
+            type='button'
+            onClick={() => history.push('/')}
+            className='button'
+          >
             Voltar
           </Button>
           <Button

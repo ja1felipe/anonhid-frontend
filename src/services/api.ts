@@ -317,6 +317,48 @@ const deletePost = async (id: string): Promise<IPosts> => {
   })
 }
 
+const validateAccount = async (token: string): Promise<IPosts> => {
+  return new Promise(async (resolve, reject) => {
+    api
+      .post(`/auth/validate/${token}`, {
+        headers: {
+          Authorization: isLogged()
+        }
+      })
+      .then((res) => {
+        store.addNotification({
+          title: 'Sucesso!',
+          message: 'Email validado com sucesso.',
+          type: 'success',
+          insert: 'top',
+          container: 'top-right',
+          animationIn: ['animate__animated', 'animate__fadeIn'],
+          animationOut: ['animate__animated', 'animate__fadeOut'],
+          dismiss: {
+            duration: 3000,
+            onScreen: true
+          }
+        })
+        resolve(res.data.user)
+      })
+      .catch((error) => {
+        store.addNotification({
+          title: 'Falha!',
+          message: error.response ? error.response.data.error : error.message,
+          type: 'danger',
+          insert: 'top',
+          container: 'top-right',
+          animationIn: ['animate__animated', 'animate__fadeIn'],
+          animationOut: ['animate__animated', 'animate__fadeOut'],
+          dismiss: {
+            duration: 3000,
+            onScreen: true
+          }
+        })
+      })
+  })
+}
+
 export {
   login,
   getPosts,
@@ -326,5 +368,6 @@ export {
   addComment,
   updatePost,
   createPost,
-  deletePost
+  deletePost,
+  validateAccount
 }

@@ -52,11 +52,16 @@ const Home: React.FC = () => {
     }
   }
 
+  function handleChangeActivePost(post: IPosts) {
+    setActivePost(post)
+    setIsNew(false)
+  }
+
   return (
     <>
       <PostModal
         new={isNew}
-        updatePost={setActivePost}
+        updatePost={handleChangeActivePost}
         post={activePost}
         editable={false}
         show={openModal}

@@ -85,7 +85,7 @@ const PostModal: React.FC<IPostModal> = (props) => {
           setThumbnail(blob)
         })
     }
-  }, [])
+  }, [props.post])
 
   const preview = useMemo(() => {
     return thumbnail ? URL.createObjectURL(thumbnail) : ''
@@ -112,9 +112,9 @@ const PostModal: React.FC<IPostModal> = (props) => {
       setEditable(!editable)
     } else if (props.new) {
       let new_post = await createPost(data)
+      setEditable(!editable)
       props.updatePost(new_post)
       props.handleModal(!props.show)
-      setEditable(!editable)
     }
   }
 

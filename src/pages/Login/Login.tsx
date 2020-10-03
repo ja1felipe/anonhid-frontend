@@ -77,10 +77,15 @@ const Login: React.FC = () => {
         </CheckboxContainer>
 
         <ButtonContainer>
-          <Button onClick={() => history.push('/')} className='button'>
+          <Button
+            type='button'
+            onClick={() => history.push('/')}
+            className='button'
+          >
             Voltar
           </Button>
           <Button
+            type='submit'
             title={
               !email || !password ? 'Por favor preencha todos os dados.' : ''
             }
